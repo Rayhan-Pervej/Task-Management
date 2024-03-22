@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "501137900719",
+    "project_id": "task-management-24",
+    "storage_bucket": "task-management-24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501137900719:android:d17e56b3f96574ca0a805a",
+        "android_client_info": {
+          "package_name": "com.rayhan.task_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOL7rare6BRz1yM-V1Bi41PcTiWY-xquA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
