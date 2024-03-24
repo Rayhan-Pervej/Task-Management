@@ -1,10 +1,10 @@
 name: plan_it
 description: "A new Flutter project."
-publish_to: 'none'
-version: 0.1.0
+publish_to: 'none' 
+version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
+  sdk: '>=3.3.2 <4.0.0'
 
 dependencies:
   flutter:
@@ -25,14 +25,16 @@ dependencies:
 
   # utils
   provider: ^6.1.2
-  flashy_tab_bar2: ^0.0.10
   flutter_overlay_loader: ^2.0.0
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_lints: ^3.0.0
 
-
 flutter:
+
   uses-material-design: true
+
