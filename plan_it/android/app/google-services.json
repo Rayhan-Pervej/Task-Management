@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "486437278400",
+    "project_id": "plan-it-24",
+    "storage_bucket": "plan-it-24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486437278400:android:419b0af92e4690347dd325",
+        "android_client_info": {
+          "package_name": "com.rayhan.plan_it"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkCEtNqJZ61p-HNa4Io3fviIbFfSMRfFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
