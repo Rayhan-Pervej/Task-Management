@@ -23,11 +23,22 @@ class _NavbarState extends State<Navbar> {
     return Scaffold(
       backgroundColor: MyColor.scaffoldColor,
       appBar: AppBar(
+        backgroundColor: MyColor.appbarColor,
         title: Text(
           'Plan IT',
           style: TextDesign().pageTitle.copyWith(fontSize: 25),
         ),
-        backgroundColor: MyColor.appbarColor,
+        actions: selectedIndex == 2
+            ? [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    FontAwesomeIcons.arrowRightFromBracket,
+                    color: MyColor.buttonBlue,
+                  ),
+                )
+              ]
+            : null,
       ),
       body: PageView(
         controller: pageViewController,
@@ -59,6 +70,9 @@ class _NavbarState extends State<Navbar> {
             selectedIndex: selectedIndex,
             onTabChange: (index) {
               setState(() {
+                if ((selectedIndex - index).abs() > 1) {
+                  pageViewController.jumpToPage(index);
+                }
                 pageViewController.animateToPage(
                   index,
                   duration: const Duration(milliseconds: 400),
@@ -67,6 +81,7 @@ class _NavbarState extends State<Navbar> {
                 selectedIndex = index;
               });
             },
+            textStyle: TextDesign().navText,
             tabs: const [
               GButton(
                 icon: FontAwesomeIcons.chartSimple,
@@ -74,9 +89,9 @@ class _NavbarState extends State<Navbar> {
                 text: 'Status',
               ),
               GButton(
-                icon: FontAwesomeIcons.houseChimney,
+                icon: FontAwesomeIcons.listCheck,
                 iconSize: 20,
-                text: 'Home',
+                text: 'Tasks',
               ),
               GButton(
                 icon: FontAwesomeIcons.userLarge,
