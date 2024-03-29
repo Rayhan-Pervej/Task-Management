@@ -37,6 +37,11 @@ class TextDesign {
     fontWeight: FontWeight.w700,
     color: MyColor.black,
   );
+  TextStyle header = GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: MyColor.black,
+  );
   TextStyle validator = GoogleFonts.lato(
     fontSize: 12,
     fontWeight: FontWeight.w600,

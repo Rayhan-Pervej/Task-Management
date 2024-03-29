@@ -5,9 +5,9 @@ import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/services/utils/validators.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:plan_it/theme/text.dart';
-import 'package:plan_it/widgets/input_widgets/date_picker.dart';
-import 'package:plan_it/widgets/input_widgets/input_field.dart';
-import 'package:plan_it/widgets/input_widgets/multi_line_input_field.dart';
+import 'package:plan_it/components/input_widgets/date_picker.dart';
+import 'package:plan_it/components/input_widgets/input_field.dart';
+import 'package:plan_it/components/input_widgets/multi_line_input_field.dart';
 
 class AddTaskForm extends StatefulWidget {
   const AddTaskForm({super.key});
