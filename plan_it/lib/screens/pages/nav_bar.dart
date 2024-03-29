@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:plan_it/screens/pages/tabs/profile.dart';
 import 'package:plan_it/screens/pages/tabs/progress.dart';
 import 'package:plan_it/screens/pages/tabs/tasks.dart';
+import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:plan_it/theme/text.dart';
 
@@ -17,6 +20,27 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   int selectedIndex = 1;
   final pageViewController = PageController(initialPage: 1);
+  final auth = FirebaseAuth.instance;
+  final firebase = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    firebase.collection('users').doc(auth.currentUser!.uid).get().then((value) {
+      String firstName = value['firstName'];
+      String lastName = value['lastName'];
+      //       String lastName = userDoc['lastName'];
+      showSnackBar(
+        context: context,
+        title: 'Welcome',
+        message: '$firstName $lastName',
+        error: false,
+        height: 200,
+        duration: const Duration(seconds: 3),
+      );
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +55,9 @@ class _NavbarState extends State<Navbar> {
         actions: selectedIndex == 2
             ? [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    auth.signOut();
+                  },
                   icon: const Icon(
                     FontAwesomeIcons.arrowRightFromBracket,
                     color: MyColor.buttonBlue,

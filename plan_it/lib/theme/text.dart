@@ -47,6 +47,11 @@ class TextDesign {
     fontWeight: FontWeight.normal,
     color: MyColor.black,
   );
+  TextStyle snackBar = GoogleFonts.poppins(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: MyColor.white,
+  );
 
   // not final need to edit
   TextStyle containerHeader = GoogleFonts.poppins(

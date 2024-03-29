@@ -1,6 +1,6 @@
 name: plan_it
 description: "A new Flutter project."
-publish_to: 'none' 
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # firebase 
+  # firebase
   firebase_core: ^2.27.1
   firebase_auth: ^4.17.9
   firebase_storage: ^11.6.10
@@ -22,12 +22,13 @@ dependencies:
   # icon
   font_awesome_flutter: ^10.7.0
   cupertino_icons: ^1.0.6
-  
+
 
   # utils
   provider: ^6.1.2
   flutter_overlay_loader: ^2.0.0
   google_nav_bar: ^5.0.6
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

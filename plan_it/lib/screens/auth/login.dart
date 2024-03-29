@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_it/screens/auth/sign_up.dart';
+import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/services/utils/validators.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:plan_it/theme/text.dart';
@@ -17,6 +20,17 @@ class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  //firbase link
+  final auth = FirebaseAuth.instance;
+  final firebase = FirebaseFirestore.instance;
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +84,50 @@ class _LoginState extends State<Login> {
                         ElevatedButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            if (formKey.currentState!.validate()) {}
+                            if (formKey.currentState!.validate()) {
+                              //
+
+                              //
+                              auth
+                                  .signInWithEmailAndPassword(
+                                      email: emailController.text.trim(),
+                                      password: passwordController.text.trim())
+                                  .catchError((error) {
+                                showSnackBar(
+                                  context: context,
+                                  title: 'Invalid',
+                                  message: "Wrong email or password",
+                                  //message: error.toString().split(']').last,
+                                  error: true,
+                                  height: 120,
+                                  duration: const Duration(seconds: 5),
+                                );
+                                return Future<UserCredential>.error(error);
+                              });
+
+                              //
+
+                              //
+                              // try {
+                              //   await auth.signInWithEmailAndPassword(
+                              //     email: emailController.text.trim(),
+                              //     password: passwordController.text.trim(),
+                              //   );
+                              // } on FirebaseAuthException catch (e) {
+                              //   //print(e.toString());
+                              //   if (context.mounted) {
+                              //     showSnackBar(
+                              //       context: context,
+                              //       title: "Error",
+                              //       message: "Wrong email or password",
+                              //       error: true,
+                              //       duration: const Duration(seconds: 2),
+                              //       height: 120,
+                              //     );
+                              //   }
+                              //   return Future.error(e);
+                              // }
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: MyColor.buttonBlue,
@@ -90,14 +147,16 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Don't have an account ?",
+                              "Don't have an account?",
                               style: TextDesign().bodyText.copyWith(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const SignUp()));
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => const SignUp()),
+                                    (route) => false);
                               },
                               child: Padding(
                                 padding:

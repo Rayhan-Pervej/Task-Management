@@ -29,7 +29,9 @@ class ValidatorClass {
 
   String? validatorTaskName(String? value) {
     if (value!.isEmpty) {
-      return "Please enter the task name";
+      return "Please enter the task name rightly";
+    } else if (RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%]').hasMatch(value)) {
+      return "Please enter a valid user name";
     }
     return null;
   }
