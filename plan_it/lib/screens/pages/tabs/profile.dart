@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plan_it/components/box_widgets/text_box.dart';
 import 'package:plan_it/theme/color.dart';
-import 'package:plan_it/theme/text.dart';
+import 'package:random_avatar/random_avatar.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,6 +14,56 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final auth = FirebaseAuth.instance;
+  final firebase = FirebaseFirestore.instance;
+  String firstName = '';
+  String lastName = '';
+  String email = '';
+  String address = '';
+
+  // @override
+  // void initState() {
+  //   fetchUserData();
+  //   super.initState();
+  // }
+
+  // Future<void> fetchUserData() async {
+  //   final userData =
+  //       await firebase.collection('users').doc(auth.currentUser!.uid).get();
+  //   if (userData.exists) {
+  //     setState(() {
+  //       firstName = userData['firstName'];
+  //       lastName = userData['lastName'];
+  //       email = userData['email'];
+  //       address = userData['address'] ?? 'No address given';
+  //     });
+  //   }
+  // }
+
+  //Below code is for real time data reading without any statechange or anything.
+
+  Stream<DocumentSnapshot> userDataStream() {
+    return firebase.collection('users').doc(auth.currentUser!.uid).snapshots();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userDataStream().listen((DocumentSnapshot userData) {
+      if (userData.exists) {
+        setState(() {
+          firstName = userData['firstName'] ?? '';
+          lastName = userData['lastName'] ?? '';
+          email = userData['email'] ?? '';
+          address = userData['address'] ?? '';
+          if (address.isEmpty) {
+            address = 'Add your address';
+          }
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,16 +79,12 @@ class _ProfileState extends State<Profile> {
             Center(
               child: Stack(
                 children: [
-                  const SizedBox(
-                    width: 150,
-                    height: 150,
-                    child: CircleAvatar(
-                      backgroundColor: MyColor.green,
-                      child: Icon(
-                        FontAwesomeIcons.user, // FontAwesome icon
-                        size: 60,
-                        color: MyColor.white,
-                      ),
+                  SizedBox(
+                    child: RandomAvatar(
+                      DateTime.now().toIso8601String(),
+                      trBackground: false,
+                      width: 150,
+                      height: 150,
                     ),
                   ),
                   Positioned(
@@ -63,28 +109,26 @@ class _ProfileState extends State<Profile> {
               child: Stack(
                 children: [
                   Container(
-                    width: 300,
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    // width: 300,
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: MyColor.containerWhite,
                     ),
-                    padding: const EdgeInsets.all(10),
-                    child: const Column(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextBox(textHeader: 'Name', textBody: 'Rayhan Pervej'),
                         TextBox(
-                            textHeader: 'Address',
-                            textBody: 'Bashundhara R/A, Dhaka'),
-                        TextBox(
-                            textHeader: 'Email',
-                            textBody: 'rayhanp1011@gmail.com'),
+                            textHeader: 'Name',
+                            textBody: '$firstName $lastName'),
+                        TextBox(textHeader: 'Address', textBody: address),
+                        TextBox(textHeader: 'Email', textBody: email),
                       ],
                     ),
                   ),
                   Positioned(
-                    right: 10,
+                    right: 20,
                     top: -7,
                     child: IconButton(
                       onPressed: () {},

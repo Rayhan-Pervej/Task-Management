@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_it/screens/auth/login.dart';
-import 'package:plan_it/screens/pages/nav_bar.dart';
 import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/services/utils/validators.dart';
 import 'package:plan_it/theme/color.dart';

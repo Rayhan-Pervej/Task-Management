@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_it/theme/color.dart';
 import 'package:plan_it/theme/text.dart';
 
 class TextBox extends StatelessWidget {
@@ -17,21 +18,28 @@ class TextBox extends StatelessWidget {
       //   color: MyColor.containerRed,
       //   borderRadius: BorderRadius.circular(15),
       // ),
-      padding: const EdgeInsets.all(5),
-      // margin: const EdgeInsets.only(top: 30, left: 40, right: 40),
+      //padding: const EdgeInsets.all(2),
+      margin: const EdgeInsets.symmetric(vertical: 3),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             textHeader,
-            style: TextDesign().header.copyWith(fontSize: 17),
+            style: TextDesign().header.copyWith(fontSize: 17, height: 0),
           ),
-          Text(
-            textBody,
-            style: TextDesign()
-                .bodyText
-                .copyWith(fontSize: 16, fontWeight: FontWeight.w400),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: MyColor.scaffoldColor,
+                borderRadius: BorderRadius.circular(5)),
+            // margin: const EdgeInsets.only(top: 1, bottom: 3),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            child: Text(
+              textBody,
+              style: TextDesign().bodyText.copyWith(
+                  fontSize: 16, fontWeight: FontWeight.w400, height: 0),
+            ),
           ),
         ],
       ),
