@@ -147,6 +147,7 @@ class _SignUpState extends State<SignUp> {
                                         'firstName': firstNameController.text,
                                         'lastName': lastNameController.text,
                                         'email': emailController.text,
+                                        'address': '',
                                       });
 
                                       if (context.mounted) {

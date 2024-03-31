@@ -58,6 +58,12 @@ class TextDesign {
     color: MyColor.white,
   );
 
+  TextStyle taskName = GoogleFonts.poppins(
+    fontSize: 16,
+    fontWeight: FontWeight.w800,
+    color: MyColor.black,
+  );
+
   // not final need to edit
   TextStyle containerHeader = GoogleFonts.poppins(
     fontSize: 18,
@@ -66,12 +72,6 @@ class TextDesign {
   );
 
   TextStyle fieldHint = GoogleFonts.poppins(
-    fontSize: 18,
-    fontWeight: FontWeight.w800,
-    color: MyColor.black,
-  );
-
-  TextStyle taskName = GoogleFonts.poppins(
     fontSize: 18,
     fontWeight: FontWeight.w800,
     color: MyColor.black,

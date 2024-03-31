@@ -15,6 +15,7 @@ class MyColor{
   static const containerBlue = Color(0xff5271ff);
   static const containerRed = Color(0xffff5252);
   static const containerGray = Color(0xff5c6166);
+  static const containerYellow = Color.fromARGB(255, 255, 234, 188);
 
   // Alert
   static const alertBlue = Color(0xff256ed1);
