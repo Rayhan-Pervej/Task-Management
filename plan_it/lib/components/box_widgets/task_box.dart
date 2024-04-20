@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:plan_it/screens/dialog/delete_task.dart';
 import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:plan_it/theme/text.dart';
+
+import '../../screens/dialog/edit_task.dart';
 
 class TaskBox extends StatefulWidget {
   final String taskName;
@@ -33,13 +36,13 @@ class _TaskBoxState extends State<TaskBox> {
         .collection('tasks')
         .doc(widget.taskId)
         .update({'completed': completed}).then((_) {
-     if (widget.completed == true){
-       showSnackBar(
-          context: context,
-          message: 'congratulations!',
-          error: false,
-          height: 160);
-     }
+      if (widget.completed == true) {
+        showSnackBar(
+            context: context,
+            message: 'congratulations!',
+            error: false,
+            height: 160);
+      }
       // print('Completed status updated successfully');
     }).catchError((error) {
       //print("Failed to update completed status: $error");
@@ -121,7 +124,14 @@ class _TaskBoxState extends State<TaskBox> {
                   height: 2,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return  EditTaskForm(taskId: widget.taskId, deadline: widget.deadline);
+                      },
+                    );
+                  },
                   child: const Icon(
                     FontAwesomeIcons.pen,
                     size: 18,
@@ -131,7 +141,14 @@ class _TaskBoxState extends State<TaskBox> {
                   height: 20,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return  DeleteTask(taskId: widget.taskId);
+                      },
+                    );
+                  },
                   child: const Icon(
                     FontAwesomeIcons.trash,
                     size: 18,
