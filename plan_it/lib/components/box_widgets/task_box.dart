@@ -31,24 +31,6 @@ class TaskBox extends StatefulWidget {
 }
 
 class _TaskBoxState extends State<TaskBox> {
-  void updateCompletedStatus(bool completed) {
-    FirebaseFirestore.instance
-        .collection('tasks')
-        .doc(widget.taskId)
-        .update({'completed': completed}).then((_) {
-      if (widget.completed == true) {
-        showSnackBar(
-            context: context,
-            message: 'congratulations!',
-            error: false,
-            height: 160);
-      }
-      // print('Completed status updated successfully');
-    }).catchError((error) {
-      //print("Failed to update completed status: $error");
-    });
-  }
-
   // @override
   // void initState() {
   //   super.initState();
@@ -60,7 +42,7 @@ class _TaskBoxState extends State<TaskBox> {
     return Card(
       elevation: 5,
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      color: MyColor.containerYellow,
+      color: widget.completed ? Color.fromARGB(197, 56, 56, 58) : MyColor.containerYellow,
       child: Stack(
         children: [
           Row(
@@ -82,14 +64,20 @@ class _TaskBoxState extends State<TaskBox> {
                   children: [
                     Text(
                       widget.taskName,
-                      style: TextDesign().taskName,
+                      style: TextDesign().taskName.copyWith(
+                            color: widget.completed
+                                ? MyColor.gray
+                                : MyColor.headerBlack,
+                          ),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     Text(
                       widget.taskDescription,
-                      style: TextDesign().bodyText.copyWith(fontSize: 14),
+                      style: TextDesign().bodyText.copyWith(fontSize: 14, color: widget.completed
+                                ? MyColor.gray
+                                : MyColor.headerBlack,),
                     ),
                     const SizedBox(
                       height: 5,
@@ -97,7 +85,9 @@ class _TaskBoxState extends State<TaskBox> {
                     Text(
                         'Deadline: ${widget.deadline.day}/${widget.deadline.month}/${widget.deadline.year}',
                         style: TextDesign().bodyText.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600)),
+                            fontSize: 13, fontWeight: FontWeight.w600, color: widget.completed
+                                ? MyColor.gray
+                                : MyColor.headerBlack,)),
                   ],
                 ),
               ),
@@ -111,12 +101,22 @@ class _TaskBoxState extends State<TaskBox> {
             child: Column(
               children: [
                 Checkbox(
-                  checkColor: MyColor.buttonWhite,
-                  activeColor: MyColor.buttonBlue,
+                  checkColor: widget.completed ?  Color.fromARGB(255, 99, 99, 99) : MyColor.buttonWhite,
+                  activeColor: widget.completed ? Color.fromARGB(255, 22, 24, 68) :MyColor.buttonBlue,
                   value: widget.completed,
                   onChanged: (bool? value) {
                     if (value != null) {
-                      updateCompletedStatus(value);
+                      FirebaseFirestore.instance
+                          .collection('tasks')
+                          .doc(widget.taskId)
+                          .update({'completed': value});
+                      if (value == true) {
+                        showSnackBar(
+                            context: context,
+                            message: 'congratulations!',
+                            error: false,
+                            height: 160);
+                      }
                     }
                   },
                 ),
@@ -128,13 +128,17 @@ class _TaskBoxState extends State<TaskBox> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return  EditTaskForm(taskId: widget.taskId, deadline: widget.deadline);
+                        return EditTaskForm(
+                            taskId: widget.taskId, deadline: widget.deadline);
                       },
                     );
                   },
-                  child: const Icon(
+                  child: Icon(
                     FontAwesomeIcons.pen,
                     size: 18,
+                    color: widget.completed
+                                ? MyColor.gray
+                                : MyColor.headerBlack,
                   ),
                 ),
                 const SizedBox(
@@ -145,13 +149,16 @@ class _TaskBoxState extends State<TaskBox> {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return  DeleteTask(taskId: widget.taskId);
+                        return DeleteTask(taskId: widget.taskId);
                       },
                     );
                   },
-                  child: const Icon(
+                  child:  Icon(
                     FontAwesomeIcons.trash,
                     size: 18,
+                     color: widget.completed
+                                ? MyColor.gray
+                                : MyColor.headerBlack,
                   ),
                 ),
               ],

@@ -14,6 +14,7 @@ class Tasks extends StatefulWidget {
 }
 
 class _TasksState extends State<Tasks> {
+  
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late User user;
@@ -26,48 +27,48 @@ class _TasksState extends State<Tasks> {
     fetchTasks();
   }
 
-void fetchTasks() {
-  firestore
-      .collection('tasks')
-      .where('userId', isEqualTo: user.uid)
-      .snapshots()
-      .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
-    List<Map<String, dynamic>> updatedTasks =
-        snapshot.docs.map((doc) {
-          // Accessing document ID (taskId) from the document snapshot
-          String taskId = doc.id;
-          // Merging document ID with task data
-          Map<String, dynamic> taskData = doc.data();
-          taskData['taskId'] = taskId;
-          return taskData;
-        }).toList();
-    updatedTasks.sort((a, b) =>
-        (a['deadline'] as Timestamp).compareTo(b['deadline'] as Timestamp));
-    setState(() {
-      tasks = updatedTasks;
+  void fetchTasks() {
+    firestore
+        .collection('tasks')
+        .where('userId', isEqualTo: user.uid)
+        .snapshots()
+        .listen((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      List<Map<String, dynamic>> updatedTasks = snapshot.docs.map((doc) {
+        // Accessing document ID (taskId) from the document snapshot
+        String taskId = doc.id;
+        // Merging document ID with task data
+        Map<String, dynamic> taskData = doc.data();
+        taskData['taskId'] = taskId;
+        return taskData;
+      }).toList();
+      updatedTasks.sort((a, b) =>
+          (a['deadline'] as Timestamp).compareTo(b['deadline'] as Timestamp));
+      setState(() {
+        tasks = updatedTasks;
+      });
     });
-  });
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> incompleteTasks =
+        tasks.where((task) => !task['completed']).toList();
+    List<Map<String, dynamic>> completedTasks =
+        tasks.where((task) => task['completed']).toList();
+
     return Scaffold(
       backgroundColor: MyColor.scaffoldColor,
-      body: ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder: (context, index) {
-          final task = tasks[index];
-          return TaskBox(
-            taskName: task['name'],
-            taskDescription: task['description'],
-            completed: task['completed'],
-            createdTimestamp: task['createdTimestamp']?.toDate(),
-            deadline: task['deadline']?.toDate(),
-            taskId: task['taskId'],
-           
-          );
-        },
+      body: ListView(
+        children: [
+          buildTaskSection(incompleteTasks),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey, borderRadius: BorderRadius.circular(5)),
+            height: 8,
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 11),
+          ),
+          buildTaskSection(completedTasks),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -87,6 +88,30 @@ void fetchTasks() {
           size: 30,
         ),
       ),
+    );
+  }
+
+ buildTaskSection(List<Map<String, dynamic>> tasks) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: tasks.length,
+          itemBuilder: (context, index) {
+            final task = tasks[index];
+            return TaskBox(
+              taskName: task['name'],
+              taskDescription: task['description'],
+              completed: task['completed'],
+              createdTimestamp: task['createdTimestamp']?.toDate(),
+              deadline: task['deadline']?.toDate(),
+              taskId: task['taskId'],
+            );
+          },
+        ),
+      ],
     );
   }
 }
