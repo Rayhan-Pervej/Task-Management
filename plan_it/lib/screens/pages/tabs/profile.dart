@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plan_it/components/box_widgets/text_box.dart';
+import 'package:plan_it/screens/pages/tabs/edit_profile.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:random_avatar/random_avatar.dart';
 
@@ -131,7 +132,11 @@ class _ProfileState extends State<Profile> {
                     right: 20,
                     top: -7,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                         Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const EditProfile()));
+                      },
                       icon: const Icon(
                         FontAwesomeIcons.penToSquare,
                         color: MyColor.buttonBlue,

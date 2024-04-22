@@ -25,7 +25,6 @@ class _NavbarState extends State<Navbar> {
 
   @override
   void initState() {
-    // TODO: implement initState
     firebase.collection('users').doc(auth.currentUser!.uid).get().then((value) {
       String firstName = value['firstName'];
       String lastName = value['lastName'];
