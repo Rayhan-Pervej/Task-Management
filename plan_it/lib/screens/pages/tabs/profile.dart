@@ -84,7 +84,7 @@ class _ProfileState extends State<Profile> {
                 children: [
                   SizedBox(
                     child: RandomAvatar(
-                      DateTime.now().toIso8601String(),
+                      "129",
                       trBackground: false,
                       width: 150,
                       height: 150,
@@ -94,7 +94,9 @@ class _ProfileState extends State<Profile> {
                     bottom: 0,
                     right: 0,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        
+                      },
                       icon: const Icon(
                         FontAwesomeIcons.penToSquare,
                         color: MyColor.buttonBlue,
@@ -155,13 +157,12 @@ class _ProfileState extends State<Profile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               
                 InkWell(
                   onTap: () {
                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EditPassword()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const EditPassword()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
