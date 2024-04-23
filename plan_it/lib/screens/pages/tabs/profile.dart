@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:plan_it/components/box_widgets/text_box.dart';
+import 'package:plan_it/screens/pages/tabs/edit_password.dart';
 import 'package:plan_it/screens/pages/tabs/edit_profile.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:random_avatar/random_avatar.dart';
+import '../../../theme/text.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -133,9 +135,10 @@ class _ProfileState extends State<Profile> {
                     top: -7,
                     child: IconButton(
                       onPressed: () {
-                         Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const EditProfile()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const EditProfile()));
                       },
                       icon: const Icon(
                         FontAwesomeIcons.penToSquare,
@@ -145,6 +148,33 @@ class _ProfileState extends State<Profile> {
                   )
                 ],
               ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+               
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const EditPassword()));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      'Tap To Change Your Password',
+                      style: TextDesign().buttonText.copyWith(
+                          fontSize: 14,
+                          color: MyColor.blue,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                )
+              ],
             )
           ],
         ));

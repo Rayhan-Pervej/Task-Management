@@ -42,7 +42,7 @@ class _TaskBoxState extends State<TaskBox> {
     return Card(
       elevation: 5,
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      color: widget.completed ? Color.fromARGB(197, 56, 56, 58) : MyColor.containerYellow,
+      color: widget.completed ? const Color.fromARGB(197, 56, 56, 58) : MyColor.containerYellow,
       child: Stack(
         children: [
           Row(
@@ -87,7 +87,7 @@ class _TaskBoxState extends State<TaskBox> {
                         style: TextDesign().bodyText.copyWith(
                             fontSize: 13, fontWeight: FontWeight.w600, color: widget.completed
                                 ? MyColor.gray
-                                : MyColor.headerBlack,)),
+                                :(widget.deadline.isBefore(DateTime.now()) ? MyColor.alertRed : MyColor.headerBlack))),
                   ],
                 ),
               ),
@@ -101,8 +101,8 @@ class _TaskBoxState extends State<TaskBox> {
             child: Column(
               children: [
                 Checkbox(
-                  checkColor: widget.completed ?  Color.fromARGB(255, 99, 99, 99) : MyColor.buttonWhite,
-                  activeColor: widget.completed ? Color.fromARGB(255, 22, 24, 68) :MyColor.buttonBlue,
+                  checkColor: widget.completed ? const Color.fromARGB(255, 99, 99, 99) : MyColor.buttonWhite,
+                  activeColor: widget.completed ?const Color.fromARGB(255, 22, 24, 68) :MyColor.buttonBlue,
                   value: widget.completed,
                   onChanged: (bool? value) {
                     if (value != null) {
