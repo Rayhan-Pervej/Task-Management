@@ -108,6 +108,7 @@ class _AddTaskFormState extends State<AddTaskForm> {
                         'deadline': selectedDate,
                         'completed': false,
                         'createdTimestamp': DateTime.now(),
+                        'completedTimestamp': null,
                       }).then((value) {
                         showSnackBar(
                             context: context,

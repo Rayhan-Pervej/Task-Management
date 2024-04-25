@@ -42,7 +42,9 @@ class _TaskBoxState extends State<TaskBox> {
     return Card(
       elevation: 5,
       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      color: widget.completed ? const Color.fromARGB(197, 56, 56, 58) : MyColor.containerYellow,
+      color: widget.completed
+          ? const Color.fromARGB(197, 56, 56, 58)
+          : MyColor.containerYellow,
       child: Stack(
         children: [
           Row(
@@ -75,19 +77,28 @@ class _TaskBoxState extends State<TaskBox> {
                     ),
                     Text(
                       widget.taskDescription,
-                      style: TextDesign().bodyText.copyWith(fontSize: 14, color: widget.completed
+                      style: TextDesign().bodyText.copyWith(
+                            fontSize: 14,
+                            color: widget.completed
                                 ? MyColor.gray
-                                : MyColor.headerBlack,),
+                                : MyColor.headerBlack,
+                          ),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
                     Text(
-                        'Deadline: ${widget.deadline.day}/${widget.deadline.month}/${widget.deadline.year}',
-                        style: TextDesign().bodyText.copyWith(
-                            fontSize: 13, fontWeight: FontWeight.w600, color: widget.completed
+                      'Deadline: ${widget.deadline.day}/${widget.deadline.month}/${widget.deadline.year}',
+                      style: TextDesign().bodyText.copyWith(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: widget.completed
                                 ? MyColor.gray
-                                :(widget.deadline.isBefore(DateTime.now()) ? MyColor.alertRed : MyColor.headerBlack))),
+                                : (widget.deadline.isBefore(DateTime.now().subtract( const Duration(days: 1)))
+                                    ? MyColor.alertRed
+                                    : MyColor.headerBlack),
+                          ),
+                    ),
                   ],
                 ),
               ),
@@ -101,15 +112,22 @@ class _TaskBoxState extends State<TaskBox> {
             child: Column(
               children: [
                 Checkbox(
-                  checkColor: widget.completed ? const Color.fromARGB(255, 99, 99, 99) : MyColor.buttonWhite,
-                  activeColor: widget.completed ?const Color.fromARGB(255, 22, 24, 68) :MyColor.buttonBlue,
+                  checkColor: widget.completed
+                      ? const Color.fromARGB(255, 99, 99, 99)
+                      : MyColor.buttonWhite,
+                  activeColor: widget.completed
+                      ? const Color.fromARGB(255, 22, 24, 68)
+                      : MyColor.buttonBlue,
                   value: widget.completed,
                   onChanged: (bool? value) {
                     if (value != null) {
                       FirebaseFirestore.instance
                           .collection('tasks')
                           .doc(widget.taskId)
-                          .update({'completed': value});
+                          .update({
+                        'completed': value,
+                        'completedTimestamp': value ? DateTime.now() : null,
+                      });
                       if (value == true) {
                         showSnackBar(
                             context: context,
@@ -136,9 +154,8 @@ class _TaskBoxState extends State<TaskBox> {
                   child: Icon(
                     FontAwesomeIcons.pen,
                     size: 18,
-                    color: widget.completed
-                                ? MyColor.gray
-                                : MyColor.headerBlack,
+                    color:
+                        widget.completed ? MyColor.gray : MyColor.headerBlack,
                   ),
                 ),
                 const SizedBox(
@@ -153,12 +170,11 @@ class _TaskBoxState extends State<TaskBox> {
                       },
                     );
                   },
-                  child:  Icon(
+                  child: Icon(
                     FontAwesomeIcons.trash,
                     size: 18,
-                     color: widget.completed
-                                ? MyColor.gray
-                                : MyColor.headerBlack,
+                    color:
+                        widget.completed ? MyColor.gray : MyColor.headerBlack,
                   ),
                 ),
               ],
