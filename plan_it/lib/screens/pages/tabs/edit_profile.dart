@@ -63,7 +63,7 @@ class _EditProfileState extends State<EditProfile> {
           backgroundColor: MyColor.appbarColor,
           centerTitle: true,
           title: Text(
-            'Plan IT',
+            'Plan It',
             style: TextDesign().pageTitle.copyWith(fontSize: 25),
           ),
         ),

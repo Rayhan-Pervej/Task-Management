@@ -45,7 +45,7 @@ class _SignUpState extends State<SignUp> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Plan IT',
+                      'Plan It',
                       style: TextDesign().headerLarge,
                     ),
                     const SizedBox(

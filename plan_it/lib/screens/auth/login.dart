@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  'Plan IT',
+                  'Plan It',
                   style: TextDesign().headerLarge,
                 ),
                 Container(

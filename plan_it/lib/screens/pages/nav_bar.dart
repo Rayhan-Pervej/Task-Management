@@ -48,7 +48,7 @@ class _NavbarState extends State<Navbar> {
       appBar: AppBar(
         backgroundColor: MyColor.appbarColor,
         title: Text(
-          'Plan IT',
+          'Plan It',
           style: TextDesign().pageTitle.copyWith(fontSize: 25),
         ),
         actions: selectedIndex == 2

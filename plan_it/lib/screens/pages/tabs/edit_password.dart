@@ -23,17 +23,23 @@ class _EditPasswordState extends State<EditPassword> {
 
   void changePassword(String password) async {
     User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        await user.updatePassword(password);
-        
-        if (mounted) {
-          Navigator.of(context).pop();
-          showSnackBar(
-              context: context, message: "Your password Changed", error: false, height: 200);
-        }
-      
-    } else{
-      showSnackBar(context: context, message: 'user dont found', error: true,);
+    if (user != null) {
+      await user.updatePassword(password);
+
+      if (mounted) {
+        Navigator.of(context).pop();
+        showSnackBar(
+            context: context,
+            message: "Your password Changed",
+            error: false,
+            height: 200);
+      }
+    } else {
+      showSnackBar(
+        context: context,
+        message: 'user dont found',
+        error: true,
+      );
     }
   }
 
@@ -53,7 +59,7 @@ class _EditPasswordState extends State<EditPassword> {
           backgroundColor: MyColor.appbarColor,
           centerTitle: true,
           title: Text(
-            'Plan IT',
+            'Plan It',
             style: TextDesign().pageTitle.copyWith(fontSize: 25),
           ),
         ),
