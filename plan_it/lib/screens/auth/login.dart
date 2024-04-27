@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:plan_it/screens/auth/forgot_pass.dart';
 import 'package:plan_it/screens/auth/sign_up.dart';
+import 'package:plan_it/screens/pages/nav_bar.dart';
 import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/services/utils/validators.dart';
 import 'package:plan_it/theme/color.dart';
@@ -82,17 +84,21 @@ class _LoginState extends State<Login> {
                           height: 20,
                         ),
                         ElevatedButton(
-                          onPressed: () {
-                            FocusScope.of(context).unfocus();
+                          onPressed: () async {
+                            //FocusScope.of(context).unfocus();
                             if (formKey.currentState!.validate()) {
-                              //
-
-                              //
-                              auth
+                              await auth
                                   .signInWithEmailAndPassword(
-                                      email: emailController.text.trim(),
-                                      password: passwordController.text.trim())
-                                  .catchError((error) {
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              )
+                                  .then((userCredential) {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => const Navbar()),
+                                );
+                              }).catchError((error) {
+                                // Authentication failed, show snackbar
                                 showSnackBar(
                                   context: context,
                                   title: 'Invalid',
@@ -102,8 +108,35 @@ class _LoginState extends State<Login> {
                                   height: 120,
                                   duration: const Duration(seconds: 5),
                                 );
-                                return Future<UserCredential>.error(error);
                               });
+
+                              //
+                              // await auth
+                              //     .signInWithEmailAndPassword(
+                              //         email: emailController.text.trim(),
+                              //         password: passwordController.text.trim())
+                              //     .then((uid) => {
+                              //           Navigator.of(context).pushReplacement(
+                              //               MaterialPageRoute(
+                              //                   builder: (context) =>
+                              //                       const Navbar())),
+                              //         });
+                              // await auth
+                              //     .signInWithEmailAndPassword(
+                              //         email: emailController.text.trim(),
+                              //         password: passwordController.text.trim())
+                              //     .catchError((error) {
+                              //   showSnackBar(
+                              //     context: context,
+                              //     title: 'Invalid',
+                              //     message: "Wrong email or password",
+                              //     //message: error.toString().split(']').last,
+                              //     error: true,
+                              //     height: 120,
+                              //     duration: const Duration(seconds: 5),
+                              //   );
+                              //   return Future<UserCredential>.error(error);
+                              // });
 
                               //
 
@@ -139,6 +172,34 @@ class _LoginState extends State<Login> {
                             'Submit',
                             style: TextDesign().buttonText,
                           ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgotPassword()));
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: Text(
+                                  'Forgot password?',
+                                  style: TextDesign().buttonText.copyWith(
+                                      fontSize: 14,
+                                      color: MyColor.blue,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         const SizedBox(
                           height: 10,

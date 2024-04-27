@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:plan_it/screens/auth/login.dart';
+import 'package:plan_it/screens/pages/nav_bar.dart';
 import 'package:plan_it/services/utils/snackbar.dart';
 import 'package:plan_it/services/utils/validators.dart';
 import 'package:plan_it/theme/color.dart';
@@ -115,6 +116,7 @@ class _SignUpState extends State<SignUp> {
                               backgroundColor: MyColor.fieldGray,
                               fieldLabel: 'Confirm Password',
                               hintText: 'Enter same password',
+                              textInputAction: TextInputAction.done,
                             ),
                             const SizedBox(
                               height: 20,
@@ -157,12 +159,12 @@ class _SignUpState extends State<SignUp> {
                                           error: false,
                                           duration: const Duration(seconds: 5),
                                         );
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Login()),
-                                                (route) => false);
+                                        Navigator.pushAndRemoveUntil(
+                                            (context),
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const Navbar()),
+                                            (route) => false);
                                       }
                                     } catch (e) {
                                       // print(e);

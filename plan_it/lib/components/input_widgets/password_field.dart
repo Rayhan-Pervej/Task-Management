@@ -53,7 +53,7 @@ class _PasswordFieldState extends State<PasswordField> {
               });
             }
           },
-          textInputAction: widget.textInputAction ?? TextInputAction.done,
+          textInputAction: widget.textInputAction,
           validator: ValidatorClass().validatePassword,
           decoration: InputDecoration(
             focusColor: MyColor.blue,
@@ -75,8 +75,7 @@ class _PasswordFieldState extends State<PasswordField> {
                 const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
             hintText: widget.hintText,
             hintStyle: TextDesign().input.copyWith(color: MyColor.graySoft),
-            errorStyle: TextDesign()
-                .validator,
+            errorStyle: TextDesign().validator,
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent, width: 0),
             ),

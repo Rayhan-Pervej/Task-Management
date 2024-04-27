@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:plan_it/screens/auth/login.dart';
 import 'package:plan_it/screens/pages/tabs/profile.dart';
 import 'package:plan_it/screens/pages/tabs/progress.dart';
 import 'package:plan_it/screens/pages/tabs/tasks.dart';
@@ -56,6 +57,10 @@ class _NavbarState extends State<Navbar> {
                 IconButton(
                   onPressed: () {
                     auth.signOut();
+                    Navigator.pushAndRemoveUntil(
+                        (context),
+                        MaterialPageRoute(builder: (context) => const Login()),
+                        (route) => false);
                   },
                   icon: const Icon(
                     FontAwesomeIcons.arrowRightFromBracket,

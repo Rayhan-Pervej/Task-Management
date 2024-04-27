@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData && FirebaseAuth.instance.currentUser != null) {
+          if (snapshot.hasData ) {
             return const Navbar();
           } else {
             return const Login();
