@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plan_it/components/box_widgets/text_box.dart';
 import 'package:plan_it/screens/pages/tabs/edit_password.dart';
 import 'package:plan_it/screens/pages/tabs/edit_profile.dart';
 import 'package:plan_it/theme/color.dart';
 import 'package:random_avatar/random_avatar.dart';
 import '../../../theme/text.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -19,10 +23,12 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final auth = FirebaseAuth.instance;
   final firebase = FirebaseFirestore.instance;
+  final firebaseStorage = FirebaseStorage.instance;
   String firstName = '';
   String lastName = '';
   String email = '';
   String address = '';
+  String? imageUrl;
 
   // @override
   // void initState() {
@@ -52,19 +58,51 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    userDataStream().listen((DocumentSnapshot userData) {
-      if (userData.exists) {
-        setState(() {
-          firstName = userData['firstName'] ?? '';
-          lastName = userData['lastName'] ?? '';
-          email = userData['email'] ?? '';
-          address = userData['address'] ?? '';
-          if (address.isEmpty) {
-            address = 'Add your address';
-          }
-        });
-      }
-    });
+    fetchUserData();
+    // userDataStream().listen((DocumentSnapshot userData) {
+    //   if (userData.exists) {
+    //     setState(() {
+    //       firstName = userData['firstName'] ?? '';
+    //       lastName = userData['lastName'] ?? '';
+    //       email = userData['email'] ?? '';
+    //       address = userData['address'] ?? '';
+    //       if (address.isEmpty) {
+    //         address = 'Add your address';
+    //       }
+    //     });
+    //   }
+    // });
+  }
+
+  Future<void> fetchUserData() async {
+    final userData =
+        await firebase.collection('users').doc(auth.currentUser!.uid).get();
+    if (userData.exists) {
+      setState(() {
+        firstName = userData['firstName'] ?? '';
+        lastName = userData['lastName'] ?? '';
+        email = userData['email'] ?? '';
+        address = userData['address'] ?? '';
+        if (address.isEmpty) {
+          address = 'Add your address';
+        }
+      });
+    }
+
+    // Fetch the image URL and update state
+    imageUrl = await getImageUrl();
+    setState(() {});
+  }
+
+  Future<String?> getImageUrl() async {
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('profile_images/${auth.currentUser!.uid}.jpg');
+    final url = await ref.getDownloadURL();
+    return url;
+
+    // Handle error, such as image not found
+    //print('Error fetching image: $e');
   }
 
   @override
@@ -83,19 +121,41 @@ class _ProfileState extends State<Profile> {
               child: Stack(
                 children: [
                   SizedBox(
-                    child: RandomAvatar(
-                      "129",
-                      trBackground: false,
-                      width: 150,
-                      height: 150,
-                    ),
+                    child: imageUrl != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(75),
+                            child: Image.network(
+                              imageUrl!,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                              filterQuality: FilterQuality.medium,
+                            ),
+                          )
+                        : RandomAvatar(
+                            "129",
+                            trBackground: false,
+                            width: 150,
+                            height: 150,
+                          ),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: IconButton(
-                      onPressed: () {
-                        
+                      onPressed: () async {
+                        final imagePicker = ImagePicker();
+                        final pickedFile = await imagePicker.pickImage(
+                            source: ImageSource.gallery, imageQuality: 75);
+                        if (pickedFile != null) {
+                          final firebaseStorageRef = firebaseStorage
+                              .ref()
+                              .child('profile_images')
+                              .child('${auth.currentUser!.uid}.jpg');
+
+                          await firebaseStorageRef
+                              .putFile(File(pickedFile.path));
+                        } else {}
                       },
                       icon: const Icon(
                         FontAwesomeIcons.penToSquare,

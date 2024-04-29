@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../services/utils/snackbar.dart';
 import '../../../theme/color.dart';
@@ -22,25 +21,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final firebase = FirebaseFirestore.instance;
   final formKey = GlobalKey<FormState>();
 
- Future sendEmail(String email) async{
-
-   try{
+  Future sendEmail(String email) async {
+    try {
       await auth.sendPasswordResetEmail(email: email);
-      
-      if(mounted){
-        showSnackBar(context: context, message: "Check your email", error: false);
+
+      if (mounted) {
+        showSnackBar(
+            context: context, message: "Check your email", error: false);
         Navigator.of(context).pop();
-        
       }
-    } on FirebaseException catch(e){
-    if (mounted){
-      showSnackBar(context: context, message: e.message.toString(), error: false);
-      Navigator.of(context).pop();
+    } on FirebaseException catch (e) {
+      if (mounted) {
+        showSnackBar(
+            context: context, message: e.message.toString(), error: false);
+        Navigator.of(context).pop();
+      }
     }
-    
-    }
-    
- }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,11 +104,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () async{
+                        onPressed: () async {
                           if (formKey.currentState!.validate()) {
-                            
-                          String email= emailController.text.trim();
-                          sendEmail(email);
+                            String email = emailController.text.trim();
+                            sendEmail(email);
                           }
                         },
                         style: ElevatedButton.styleFrom(

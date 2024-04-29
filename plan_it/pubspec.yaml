@@ -30,6 +30,7 @@ dependencies:
   flutter_overlay_loader: ^2.0.0
   google_nav_bar: ^5.0.6
   intl: ^0.17.0
+  image_picker: ^1.1.0
 
   # chart
   fl_chart: ^0.35.0
