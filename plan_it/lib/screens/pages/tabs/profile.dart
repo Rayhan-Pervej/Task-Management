@@ -29,6 +29,7 @@ class _ProfileState extends State<Profile> {
   String email = '';
   String address = '';
   String? imageUrl;
+  bool isLoading = true;
 
   // @override
   // void initState() {
@@ -89,9 +90,11 @@ class _ProfileState extends State<Profile> {
       });
     }
 
-    // Fetch the image URL and update state
+    // Fetch the image URL and update state.
     imageUrl = await getImageUrl();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<String?> getImageUrl() async {
@@ -100,144 +103,152 @@ class _ProfileState extends State<Profile> {
         .child('profile_images/${auth.currentUser!.uid}.jpg');
     final url = await ref.getDownloadURL();
     return url;
-
-    // Handle error, such as image not found
     //print('Error fetching image: $e');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: MyColor.scaffoldColor,
-        body: ListView(
-          padding: const EdgeInsets.only(top: 20),
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            Center(
-              child: Stack(
-                children: [
-                  SizedBox(
-                    child: imageUrl != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(75),
-                            child: Image.network(
-                              imageUrl!,
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.medium,
-                            ),
-                          )
-                        : RandomAvatar(
-                            "129",
-                            trBackground: false,
-                            width: 150,
-                            height: 150,
-                          ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: IconButton(
-                      onPressed: () async {
-                        final imagePicker = ImagePicker();
-                        final pickedFile = await imagePicker.pickImage(
-                            source: ImageSource.gallery, imageQuality: 75);
-                        if (pickedFile != null) {
-                          final firebaseStorageRef = firebaseStorage
-                              .ref()
-                              .child('profile_images')
-                              .child('${auth.currentUser!.uid}.jpg');
-
-                          await firebaseStorageRef
-                              .putFile(File(pickedFile.path));
-                        } else {}
-                      },
-                      icon: const Icon(
-                        FontAwesomeIcons.penToSquare,
-                        color: MyColor.buttonBlue,
+      backgroundColor: MyColor.scaffoldColor,
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              padding: const EdgeInsets.only(top: 20),
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                Center(
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        child: imageUrl != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(75),
+                                child: Image.network(
+                                  imageUrl!,
+                                  width: 150,
+                                  height: 150,
+                                  fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.medium,
+                                ),
+                              )
+                            : RandomAvatar(
+                                "129",
+                                trBackground: false,
+                                width: 150,
+                                height: 150,
+                              ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: IconButton(
+                          onPressed: () async {
+                            final imagePicker = ImagePicker();
+                            final pickedFile = await imagePicker.pickImage(
+                                source: ImageSource.gallery, imageQuality: 75);
+                            if (pickedFile != null) {
+                              final firebaseStorageRef = firebaseStorage
+                                  .ref()
+                                  .child('profile_images')
+                                  .child('${auth.currentUser!.uid}.jpg');
+                              await firebaseStorageRef
+                                  .putFile(File(pickedFile.path));
 
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    // width: 300,
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: MyColor.containerWhite,
-                    ),
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextBox(
-                            textHeader: 'Name',
-                            textBody: '$firstName $lastName'),
-                        TextBox(textHeader: 'Address', textBody: address),
-                        TextBox(textHeader: 'Email', textBody: email),
-                      ],
-                    ),
+                              // update the imageUrl variable
+                              final imageUrl = await getImageUrl();
+                              setState(() {
+                                this.imageUrl = imageUrl;
+                              });
+                            }
+                          },
+                          icon: const Icon(
+                            FontAwesomeIcons.penToSquare,
+                            color: MyColor.buttonBlue,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  Positioned(
-                    right: 20,
-                    top: -7,
-                    child: IconButton(
-                      onPressed: () {
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+                Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        // width: 300,
+                        margin: const EdgeInsets.symmetric(horizontal: 30),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: MyColor.containerWhite,
+                        ),
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextBox(
+                                textHeader: 'Name',
+                                textBody: '$firstName $lastName'),
+                            TextBox(textHeader: 'Address', textBody: address),
+                            TextBox(textHeader: 'Email', textBody: email),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        right: 20,
+                        top: -7,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const EditProfile()));
+                          },
+                          icon: const Icon(
+                            FontAwesomeIcons.penToSquare,
+                            color: MyColor.buttonBlue,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const EditProfile()));
+                                builder: (context) => const EditPassword()));
                       },
-                      icon: const Icon(
-                        FontAwesomeIcons.penToSquare,
-                        color: MyColor.buttonBlue,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          'Tap To Change Your Password',
+                          style: TextDesign().buttonText.copyWith(
+                              fontSize: 14,
+                              color: MyColor.blue,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const EditPassword()));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Text(
-                      'Tap To Change Your Password',
-                      style: TextDesign().buttonText.copyWith(
-                          fontSize: 14,
-                          color: MyColor.blue,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ));
+            ),
+    );
   }
 }

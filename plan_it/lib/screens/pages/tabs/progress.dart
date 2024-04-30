@@ -229,21 +229,23 @@ class _ProgressState extends State<Progress> {
                     )
                   ],
                 ),
-              )
+              ),
 
-,
-              
               // Line Chart
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 8,
+                  right: 12,
+                ),
                 child: AspectRatio(
-                  aspectRatio: 1.7,
+                  aspectRatio: 1,
                   child: LineChart(
                     LineChartData(
                       minX: 0,
-                      maxX: 4,
+                      maxX: 11,
                       minY: 0,
-                      maxY: 10,
+                      maxY: 20,
                       titlesData: FlTitlesData(
                         leftTitles: SideTitles(showTitles: true),
                         bottomTitles: SideTitles(
@@ -260,6 +262,21 @@ class _ProgressState extends State<Progress> {
                                 return 'Apr';
                               case 4:
                                 return 'May';
+                              case 5:
+                                return 'Jun';
+                              case 6:
+                                return 'Jul';
+                              case 7:
+                                return 'Aug';
+                              case 8:
+                                return 'Sep';
+                              case 9:
+                                return 'Oct';
+                              case 10:
+                                return 'Nov';
+                              case 11:
+                                return 'Dec';
+
                               // Add more months as needed
                               default:
                                 return '';
@@ -270,29 +287,43 @@ class _ProgressState extends State<Progress> {
                       lineBarsData: [
                         LineChartBarData(
                           spots: [
-                            FlSpot(0, 0), // Jan
-                            FlSpot(1, 0), // Feb
-                            FlSpot(2, 0), // Mar
-                            FlSpot(3, tasksAddedThisMonth.toDouble()), // Apr
-                            FlSpot(4, tasksAddedThisMonth.toDouble()), // May
+                            FlSpot(0, 0),
+                            FlSpot(1, 0),
+                            FlSpot(2, 0),
+                            FlSpot(3, tasksAddedThisMonth.toDouble()),
+                            FlSpot(4, tasksAddedThisMonth.toDouble()),
+                            FlSpot(5, tasksAddedThisMonth.toDouble()),
+                            FlSpot(6, tasksAddedThisMonth.toDouble()),
+                            FlSpot(7, tasksAddedThisMonth.toDouble()),
+                            FlSpot(8, tasksAddedThisMonth.toDouble()),
+                            FlSpot(9, tasksAddedThisMonth.toDouble()),
+                            FlSpot(10, tasksAddedThisMonth.toDouble()),
+                            FlSpot(11, tasksAddedThisMonth.toDouble()),
                           ],
-                          isCurved: true,
+                          isCurved: false,
                           colors: [Colors.blue],
-                          barWidth: 4,
-                          isStrokeCapRound: true,
+                          barWidth: 3,
+                          isStrokeCapRound: false,
                           belowBarData: BarAreaData(show: false),
                         ),
                         LineChartBarData(
                           spots: [
-                            FlSpot(0, 0), // Jan
-                            FlSpot(1, 0), // Feb
-                            FlSpot(2, 0), // Mar
-                            FlSpot(3, tasksCompletedThisMonth.toDouble()), // Apr
-                            FlSpot(4, tasksCompletedThisMonth.toDouble()), // May
+                            FlSpot(0, 0),
+                            FlSpot(1, 0),
+                            FlSpot(2, 0),
+                            FlSpot(3, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(4, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(5, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(6, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(7, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(8, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(9, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(10, tasksCompletedThisMonth.toDouble()),
+                            FlSpot(11, tasksCompletedThisMonth.toDouble()),
                           ],
-                          isCurved: true,
+                          isCurved: false,
                           colors: [Colors.green],
-                          barWidth: 4,
+                          barWidth: 3,
                           isStrokeCapRound: true,
                           belowBarData: BarAreaData(show: false),
                         ),

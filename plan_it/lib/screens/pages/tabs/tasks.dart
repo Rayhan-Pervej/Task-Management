@@ -14,11 +14,11 @@ class Tasks extends StatefulWidget {
 }
 
 class _TasksState extends State<Tasks> {
-  
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late User user;
   List<Map<String, dynamic>> tasks = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -45,6 +45,7 @@ class _TasksState extends State<Tasks> {
           (a['deadline'] as Timestamp).compareTo(b['deadline'] as Timestamp));
       setState(() {
         tasks = updatedTasks;
+        isLoading = false;
       });
     });
   }
@@ -58,18 +59,25 @@ class _TasksState extends State<Tasks> {
 
     return Scaffold(
       backgroundColor: MyColor.scaffoldColor,
-      body: ListView(
-        children: [
-          buildTaskSection(incompleteTasks),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.grey, borderRadius: BorderRadius.circular(5)),
-            height: 8,
-            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 11),
-          ),
-          buildTaskSection(completedTasks),
-        ],
-      ),
+      body: isLoading
+          ? const Center(
+              child:
+                  CircularProgressIndicator(), // Show CircularProgressIndicator while loading
+            )
+          : ListView(
+              children: [
+                buildTaskSection(incompleteTasks),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(5)),
+                  height: 8,
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 11),
+                ),
+                buildTaskSection(completedTasks),
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -91,7 +99,7 @@ class _TasksState extends State<Tasks> {
     );
   }
 
- buildTaskSection(List<Map<String, dynamic>> tasks) {
+  buildTaskSection(List<Map<String, dynamic>> tasks) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
